@@ -208,4 +208,11 @@ app.get("/api/transactions", async (req, res) => {
 
 // start
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`));
+
+// Only start the HTTP server when NOT running tests
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`));
+}
+
+// Make the Express app importable by Jest
+export default app;
