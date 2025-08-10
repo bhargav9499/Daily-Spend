@@ -1,0 +1,46 @@
+# ---- Node (both apps)
+node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+*.log
+logs/
+*.pid
+*.pid.lock
+
+# ---- Env / secrets
+**/.env
+.env.local
+
+# ---- Build artifacts
+dist/
+out/
+out-tsc/
+tmp/
+temp/
+coverage/
+
+# ---- Angular-specific
+.angular/cache/
+bazel-out/
+.sass-cache/
+typings/
+
+# If you build to frontend/dist, the line above already ignores it
+frontend/dist/
+backend/dist/
+
+# ---- Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# ---- Project-specific
+backend/*.log
+frontend/.env
