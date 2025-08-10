@@ -1,0 +1,112 @@
+<div class="row g-3">
+  <div class="col-12">
+    <div class="card p-3">
+      <div class="row g-2 align-items-end">
+        <div class="col-6 col-md-2">
+          <label class="form-label">Year</label>
+          <select class="form-select" [(ngModel)]="year">
+            <option *ngFor="let y of years()" [ngValue]="y">{{ y }}</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Month</label>
+          <select class="form-select" [(ngModel)]="month">
+            <option *ngFor="let m of months()" [ngValue]="m">{{ pad(m) }}</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Type</label>
+          <select class="form-select" [(ngModel)]="typeFilter" (change)="onTypeFilterChange()">
+            <option value="">All</option>
+            <option value="SPEND">Spend</option>
+            <option value="INCOME">Income</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Category</label>
+          <select class="form-select" [(ngModel)]="categoryFilter">
+            <option [ngValue]="undefined">All</option>
+            <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid">
+          <button class="btn btn-primary" (click)="load()"><i class="bi bi-funnel me-1"></i> Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="editForm">
+    <div class="card p-3">
+      <h6 class="mb-3">Edit Transaction #{{ editForm.id }}</h6>
+      <div class="row g-3">
+        <div class="col-12 col-md-3">
+          <label class="form-label">Type</label>
+          <select class="form-select" [(ngModel)]="editForm.type" [disabled]="true" (change)="onTypeFilterChange()">
+            <option value="SPEND">Spend</option>
+            <option value="INCOME">Income</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label">Category</label>
+          <select class="form-select" [(ngModel)]="editForm.category_id">
+            <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Amount</label>
+          <input class="form-control" type="number" step="0.01" min="0" [(ngModel)]="editForm.amount">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Date</label>
+          <input class="form-control" type="date" [(ngModel)]="editForm.txn_date">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Method</label>
+          <input class="form-control" [(ngModel)]="editForm.method">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Note</label>
+          <input class="form-control" [(ngModel)]="editForm.note">
+        </div>
+      </div>
+      <div class="mt-3 d-flex gap-2">
+        <button class="btn btn-primary" (click)="saveEdit()" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+        <button class="btn btn-secondary" (click)="cancelEdit()" [disabled]="saving">Cancel</button>
+      </div>
+      <div *ngIf="msg" class="mt-2 alert" [ngClass]="{'alert-success': msg==='Updated!', 'alert-danger': msg!=='Updated!'}">{{ msg }}</div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card p-3">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>Date</th><th>Type</th><th>Category</th><th>Note</th><th>Method</th>
+              <th class="text-end">Amount</th><th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of transactions">
+              <td>{{ t.txn_date | date:'MM/dd/yyyy' }}</td>
+              <td><span class="badge text-bg-{{t.type==='SPEND'?'danger':'success'}}">{{ t.type }}</span></td>
+              <td>{{ t.category_name }}</td>
+              <td>{{ t.note || '-' }}</td>
+              <td>{{ t.method || '-' }}</td>
+              <td class="text-end">{{ t.amount | number:'1.2-2' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-warning me-2" (click)="edit(t)"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger" (click)="remove(t)"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="!transactions.length">
+              <td colspan="7" class="text-center text-secondary py-3">No transactions for this filter.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

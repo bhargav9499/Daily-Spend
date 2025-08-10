@@ -1,0 +1,14 @@
+/* basic responsive helpers */
+:root {
+  --brand: #f97316; /* orange-500 */
+}
+body { background: #0b1e29; color: #e6eef3; }
+a { color: var(--brand); }
+.card { background: #102735; border-radius: 1rem; }
+.btn-primary { background: var(--brand); border-color: var(--brand); }
+
+/* make forms & tables breathe on mobile */
+.container, .container-fluid { padding-block: 1rem; }
+.table { color: #e6eef3; }
+.form-control, .form-select { background: #0d2230; color:#e6eef3; border:1px solid #27475a; }
+.form-control::placeholder { color:#88a4b3; }
